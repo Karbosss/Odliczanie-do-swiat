@@ -6,36 +6,37 @@
     <title>Odliczanie do Świąt</title>
     <link rel="stylesheet" href="style.css">
     <style>
-       body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 20px;
-}
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-h1 {
-    text-align: center;
-}
+        h1 {
+            text-align: center;
+        }
 
-.countdown {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
+        .countdown {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
 
-.days, .hours, .minutes, .seconds {
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-}
+        .days, .hours, .minutes, .seconds {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
 
-.number {
-    font-size: 2 }
+        .number {
+            font-size: 2em;
+        }
     </style>
 </head>
 <body>
@@ -48,67 +49,75 @@ h1 {
         </select>
         <div class="countdown">
             <div class="days">
-                <span class="number">0</span>
+                <span class="number">00</span>
                 <span class="label">Dni</span>
             </div>
             <div class="hours">
-                <span class="number">0</span>
+                <span class="number">00</span>
                 <span class="label">Godzin</span>
             </div>
             <div class="minutes">
-                <span class="number">0</span>
+                <span class="number">00</span>
                 <span class="label">Minut</span>
             </div>
             <div class="seconds">
-                <span class="number">0</span>
+                <span class="number">00</span>
                 <span class="label">Sekund</span>
             </div>
         </div>
     </div>
     <script>
-       const daysEl = document.querySelector('.days .number');
-const hoursEl = document.querySelector('.hours .number');
-const minutesEl = document.querySelector('.minutes .number');
-const secondsEl = document.querySelector('.seconds .number');
-const holidayEl = document.querySelector('#holiday');
+        const daysEl = document.querySelector('.days .number');
+        const hoursEl = document.querySelector('.hours .number');
+        const minutesEl = document.querySelector('.minutes .number');
+        const secondsEl = document.querySelector('.seconds .number');
+        const holidayEl = document.querySelector('#holiday');
 
-const christmasDate = new Date('2024-12-25');
-const easterDate = new Date('2025-04-14');
-const allSoulsDate = new Date('2024-11-01');
+        const christmasDate = new Date('2024-12-25');
+        const easterDate = new Date('2025-04-14');
+        const allSoulsDate = new Date('2024-11-01');
 
-const updateCountdown = () => {
-    const selectedHoliday = holidayEl.value;
-    let currentDate;
+        const updateCountdown = () => {
+            const selectedHoliday = holidayEl.value;
+            let currentDate;
 
-    switch (selectedHoliday) {
-        case 'christmas':
-            currentDate = christmasDate;
-            break;
-        case 'easter':
-            currentDate = easterDate;
-            break;
-        case 'all_souls':
-            currentDate = allSoulsDate;
-            break;
-    }
+            switch (selectedHoliday) {
+                case 'christmas':
+                    currentDate = christmasDate;
+                    break;
+                case 'easter':
+                    currentDate = easterDate;
+                    break;
+                case 'all_souls':
+                    currentDate = allSoulsDate;
+                    break;
+            }
 
-    const now = new Date();
-    const difference = currentDate - now;
+            const now = new Date();
+            const difference = currentDate - now;
 
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            if (difference <= 0) {
+                daysEl.textContent = '--';
+                hoursEl.textContent = '--';
+                minutesEl.textContent = '--';
+                secondsEl.textContent = '--';
+                return; // Stop updating if the date has passed
+            }
 
-    daysEl.textContent = days;
-    hoursEl.textContent = hours;
-    minutesEl.textContent = minutes;
-    secondsEl.textContent = seconds;
-};
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            daysEl.textContent = days < 10 ? `0${days}` : days;
+            hoursEl.textContent = hours < 10 ? `0${hours}` : hours;
+            minutesEl.textContent = minutes < 10 ? `0${minutes}` : minutes;
+            secondsEl.textContent = seconds < 10 ? `0${seconds}` : seconds;
+            };
 
 setInterval(updateCountdown, 1000);
 
-holidayEl.addEventListener('change', updateCountdown); 
+holidayEl.addEventListener('change', updateCountdown);
     </script>
 </body>
 </html>
